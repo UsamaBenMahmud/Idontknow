@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Love ❤️</title>
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --bg-gradient: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%);
+            --dark-pink: #d63384;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden; 
+            touch-action: none;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.3);
+            text-align: center;
+            width: 85%;
+            max-width: 340px;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 1 / 1; 
+            overflow: hidden;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        #memoryGallery {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .memory-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out; /* Smooth crossfade */
+            width: 100%;
+            height: 100%;
+        }
+
+        .memory-img.active {
+            opacity: 1;
+        }
+
+        h1 {
+            color: var(--dark-pink);
+            font-size: 1.3rem;
+            margin: 0 0 15px 0;
+            min-height: 3.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            height: 60px;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn {
+            background: var(--primary-pink);
+            color: white;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #noBtn {
+            background: white;
+            color: #6c757d;
+            border: 1px solid #eee;
+            position: relative;
+            z-index: 9999;
+            transition: all 0.2s ease;
+        }
+
+        #personalNote {
+            display: none;
+            margin-top: 15px;
+            color: var(--dark-pink);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-weight: 500;
+            text-align: justify;
+            padding: 0 5px;
+        }
+
+        .heart-particle {
+            position: absolute;
+            pointer-events: none;
+            animation: moveUp 4.5s linear forwards;
+            z-index: 100;
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-115vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <div class="img-container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpuaXF4cnZid3R5eGZ4bm9sZzRyeGZ4bm9sZzRyeGZ4bm9sZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KztT2c4u8mYYUiMKdJ/giphy.gif" id="displayImg">
+            
+            <div id="memoryGallery">
+                <img src="images/us.jpeg" class="memory-img active">
+                <img src="images/image1.jpeg" class="memory-img">
+                <img src="images/image2.jpeg" class="memory-img">
+                <img src="images/image3.jpeg" class="memory-img">
+                <img src="images/image4.jpeg" class="memory-img">
+            </div>
+        </div>
+        
+        <h1 id="mainTitle">Will you be my Valentine? 💖</h1>
+        
+        <div class="btn-container" id="btnWrapper">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+
+        <div id="personalNote"></div>
+    </div>
+
+    <audio id="romanticMusic">
+        <source src="audio/Miles - Neela (Official Audio).mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const title = document.getElementById('mainTitle');
+        const displayImg = document.getElementById('displayImg');
+        const memoryGallery = document.getElementById('memoryGallery');
+        const music = document.getElementById('romanticMusic');
+        const noteElement = document.getElementById('personalNote');
+        const card = document.getElementById('mainCard');
+        
+        let noAttempts = 0;
+        const noMessages = ["Wrong button! 😜", "Are you sure?", "Think again!", "Give up!"];
+
+        function moveNoButton() {
+            noAttempts++;
+            if (noAttempts <= 4) {
+                if (noBtn.style.position !== 'fixed') {
+                    noBtn.style.position = 'fixed';
+                    document.body.appendChild(noBtn);
+                }
+                const padding = 60;
+                const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+                const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+                const newX = Math.random() * (maxX - padding) + padding;
+                const newY = Math.random() * (maxY - padding) + padding;
+
+                noBtn.style.left = `${newX}px`;
+                noBtn.style.top = `${newY}px`;
+                noBtn.innerText = noMessages[noAttempts - 1];
+                yesBtn.style.transform = `scale(${1 + (noAttempts * 0.35)})`;
+            } else {
+                noBtn.style.display = 'none';
+                title.innerHTML = "No more games! <br> You're mine forever! 😘";
+            }
+        }
+
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); });
+
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                noteElement.innerHTML = text.substring(0, i+1);
+                setTimeout(() => typeWriter(text, i + 1), 50);
+            }
+        }
+
+        function startAutoSlider() {
+            const images = document.querySelectorAll('.memory-img');
+            let currentIndex = 0;
+            setInterval(() => {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }, 2000);
+        }
+
+        yesBtn.addEventListener('click', () => {
+            displayImg.style.display = 'none';
+            document.getElementById('btnWrapper').style.display = 'none';
+            if(noBtn) noBtn.style.display = 'none';
+            card.style.animation = "none"; // Stop floating to focus on text
+            
+            memoryGallery.style.display = 'block';
+            title.innerText = "Our Beautiful Journey ❤️";
+            noteElement.style.display = 'block';
+            
+            const message = "In a world full of temporary things, you are my forever. I don't need a specific day to celebrate you, because every single day with you feels like a beautiful dream come true. You are my heart, my soul, and my home. ✨";
+            typeWriter(message, 0);
+            
+            startAutoSlider();
+            music.play();
+            setInterval(createHeart, 300);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = ['❤️', '💖', '✨', '💕'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '105vh';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4500);
+        }
+    </script>
+</body>
+</html>
